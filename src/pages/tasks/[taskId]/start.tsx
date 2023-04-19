@@ -24,7 +24,7 @@ export async function getStaticProps({ params }: { params: { taskId: string } })
   }
 }
 
-export default function start({task}: {task: ITask}) {
+export default function Start({task}: {task: ITask}) {
   const [selectedFile, setSelectedFile] = useState<File|undefined>();
   const [beforeImageFiles, setBeforeImageFiles] = useState<string[]>(task.beforeImageFiles ?? []);
   const { push } = useRouter();

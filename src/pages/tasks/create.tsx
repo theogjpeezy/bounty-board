@@ -1,10 +1,8 @@
-import { addTask } from "@/db";
-import { redirect } from "next/dist/server/api-utils";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useState } from "react";
 
-export default function create() {
+export default function Create() {
   const { push } = useRouter();
   const [title, setTitle] = useState<string>('');
   const [time, setTime] = useState<string>('');

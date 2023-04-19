@@ -40,7 +40,7 @@ export default function Home({tasks}: IHomeProps) {
       {startedChunks.map((chunk, chunkIndex) => 
       <Row xs={3} key={chunkIndex}>
         {chunk.map((t, i) => 
-          <Col>
+          <Col key={i}>
             <Card className='card mb-3 bg-light' style={{maxWidth: '100%'}} key={i}>
               <CardHeader className='card-header'>{t.title}</CardHeader>
               <CardBody className='card-body'>
@@ -61,7 +61,7 @@ export default function Home({tasks}: IHomeProps) {
       {openChunks.map((chunk, chunkIndex) => 
       <Row xs={3} key={chunkIndex}>
         {chunk.map((t, i) => 
-          <Col>
+          <Col key={i}>
             <Card className='card mb-3 bg-light' style={{maxWidth: '100%'}} key={i}>
               <CardHeader className='card-header'>{t.title}</CardHeader>
               <CardBody className='card-body'>

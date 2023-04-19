@@ -4,6 +4,7 @@ import { useState } from "react";
 import type { ITask } from "@/db/tasks";
 import { Col, Row } from "reactstrap";
 import { chunk } from "lodash";
+import Link from "next/link";
 
 export async function getStaticPaths() {
   const taskIds = await getTasks();
@@ -24,7 +25,7 @@ export async function getStaticProps({ params }: { params: { taskId: string } })
   }
 }
 
-export default function view({task}: {task: ITask}) {
+export default function View({task}: {task: ITask}) {
   
   return (
     <div>
@@ -75,7 +76,7 @@ export default function view({task}: {task: ITask}) {
           )
         }
         <Row>
-          <Col xs={2} className="mb-3"><a href="/" className="btn btn-secondary">Back</a></Col>
+          <Col xs={2} className="mb-3"><Link href="/" className="btn btn-secondary">Back</Link></Col>
         </Row>
       </div>
     </div>

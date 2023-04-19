@@ -15,7 +15,7 @@ export async function getStaticProps() {
   }
 }
 
-export default function edit({task}: {task: ITask}) {
+export default function Edit({task}: {task: ITask}) {
   const [title, setTitle] = useState<string|undefined>(task.title);
   const [time, setTime] = useState<string|undefined>(task.time.toString());
   const [notes, setNotes] = useState<string|undefined>(task.notes);
