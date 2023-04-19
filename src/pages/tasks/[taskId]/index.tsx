@@ -49,9 +49,14 @@ export default function view({task}: {task: ITask}) {
           <Col xs={2}>Total Earned:</Col>
           <Col>${task.time * 13.25}</Col>
         </Row>
-        {task.status !== 'started' && 
+        {task.status === 'open' && 
           <Row>
             <Col xs={2} className="mb-3"><a href={`${task.id}/start`} className="btn btn-primary">Start Work</a></Col>
+          </Row>
+        }
+        {task.status === 'started' && 
+          <Row>
+            <Col xs={2} className="mb-3"><a href={`${task.id}/complete`} className="btn btn-primary">Complete Work</a></Col>
           </Row>
         }
         {
@@ -63,7 +68,7 @@ export default function view({task}: {task: ITask}) {
 
               {chunk(task.beforeImageFiles, 2).map((x,i) => (
                 <Row key={i} className="mb-3">
-                  {x.map((f, idx) => <Col xs={6} key={idx}><img src={`/uploads/${f}`} /></Col>)}
+                  {x.map((f, idx) => <Col xs={6} key={idx}><a href={`/uploads/${f}`} target="_blank"><img src={`/uploads/${f}`} style={{maxWidth: '16em', maxHeight: '16em'}}/></a></Col>)}
                 </Row>
               ))}
             </>

@@ -8,8 +8,8 @@ export interface INewTask {
 export interface ITask extends INewTask {
   id: string;
   status: 'open' | 'started' | 'completed';
-  startedDate?: Date;
-  completedDate?: Date;
+  startedDate?: string;
+  completedDate?: string;
   beforeImageFiles?: string[];
   afterImageFiles?: string[];
 }
