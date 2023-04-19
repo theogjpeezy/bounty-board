@@ -3,6 +3,7 @@ import Head from "next/head";
 import { useState } from "react";
 import type { ITask } from "@/db/tasks";
 import { Col, Row } from "reactstrap";
+import { chunk } from "lodash";
 
 export async function getStaticPaths() {
   const taskIds = await getTasks();
@@ -24,23 +25,14 @@ export async function getStaticProps({ params }: { params: { taskId: string } })
 }
 
 export default function view({task}: {task: ITask}) {
-  const [title, setTitle] = useState<string|undefined>(task.title);
-  const [time, setTime] = useState<string|undefined>(task.time.toString());
-  const [notes, setNotes] = useState<string|undefined>(task.notes);
-  const [description, setDescription] = useState<string|undefined>(task.description);
-    
-  const handleSubmit = (e: React.FormEvent) => {
-      e.preventDefault();
-      console.log('saved');
-  }
-
+  
   return (
     <div>
       <Head>
           <title>{task.title}</title>
       </Head>
       <div className="container">
-        <h1>{task.title}</h1>
+        <h1>{task.title} - {task.status}</h1>
         <Row>
           <Col xs={2}>Description:</Col>
           <Col>{task.description}</Col>
@@ -57,7 +49,29 @@ export default function view({task}: {task: ITask}) {
           <Col xs={2}>Total Earned:</Col>
           <Col>${task.time * 13.25}</Col>
         </Row>
-        <a href="/" className="btn btn-primary">Back</a>
+        {task.status !== 'started' && 
+          <Row>
+            <Col xs={2} className="mb-3"><a href={`${task.id}/start`} className="btn btn-primary">Start Work</a></Col>
+          </Row>
+        }
+        {
+          task.status !== 'open' && (
+            <>
+              <Row>
+                <h3>Starting Images</h3>
+              </Row>
+
+              {chunk(task.beforeImageFiles, 2).map((x,i) => (
+                <Row key={i} className="mb-3">
+                  {x.map((f, idx) => <Col xs={6} key={idx}><img src={`/uploads/${f}`} /></Col>)}
+                </Row>
+              ))}
+            </>
+          )
+        }
+        <Row>
+          <Col xs={2} className="mb-3"><a href="/" className="btn btn-secondary">Back</a></Col>
+        </Row>
       </div>
     </div>
   )

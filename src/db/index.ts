@@ -12,33 +12,48 @@ export async function getTasks() {
     title: result.title,
     description: result.description,
     time: result.time,
-    completed: result.completed,
+    status: result.status,
     notes: result.notes
   }));
 }
 
 export async function getTask(id: string) {
   const { db } = await connectToDatabase();
-  const result = await db.collection('tasks').findOne<ITask>({'_id': new ObjectId(id)});
+  const result = await db.collection('tasks').findOne({'_id': new ObjectId(id)});
+  
   return {
+    id: result?._id.toString(),
     title: result?.title,
     time: result?.time,
     description: result?.description,
-    notes: result?.notes
+    notes: result?.notes,
+    // startedDate: result?.startedDate,
+    // completedDate: result?.completedDate,
+    status: result?.status,
+    beforeImageFiles: result?.beforeImageFiles ?? [],
+    afterImageFiles: result?.afterImageFiles ?? []
   }
 }
 
 export async function addTask(task: INewTask) {
   const { db } = await connectToDatabase();
-  return db.collection('tasks').insertOne({...task, completed: false});
+  return db.collection('tasks').insertOne({...task, status: 'open'});
 }
 
 export async function deleteTask(id: string) {
-
+  const { db } = await connectToDatabase();
+  return db.collection('tasks').deleteOne({'_id': new ObjectId(id)});
 }
 
-export async function updateTask(task: any) {
-
+export async function updateTask(task: ITask) {
+  const { db } = await connectToDatabase();
+  const {id, ...rest} = task
+  const newValues = {
+    $set: {
+      ...rest
+    }
+  };
+  return db.collection('tasks').updateOne({'_id': new ObjectId(task.id)}, newValues);
 }
 
 let cachedClient: MongoClient;

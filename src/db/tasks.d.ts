@@ -7,7 +7,9 @@ export interface INewTask {
 
 export interface ITask extends INewTask {
   id: string;
-  completed: boolean;
-  completedDate: Date;
-  image: any;
+  status: 'open' | 'started' | 'completed';
+  startedDate?: Date;
+  completedDate?: Date;
+  beforeImageFiles?: string[];
+  afterImageFiles?: string[];
 }

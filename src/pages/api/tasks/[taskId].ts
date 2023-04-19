@@ -17,13 +17,13 @@ export default async function handler(
       return res.status(200).json(task as any);
     }
     case 'PUT': {
-      await updateTask(req.body);
-      return res.status(200);
+      await updateTask(JSON.parse(req.body));
+      return res.status(200).json({} as any);
     }
     case 'DELETE': {
       if (!isString(req.query)) return res.status(500);
       await deleteTask(req.query);
-      return res.status(204)
+      return res.status(204).json({} as any);
     }
   }
 }
