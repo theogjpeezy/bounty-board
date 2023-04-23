@@ -8,19 +8,31 @@ import { ITask } from '@/db/tasks';
 
 
 export async function getStaticProps() {
-  const tasks = await getTasks();
+  const tasks = await (await getTasks()).map(({time, status, title, id, description, ...rest}) => ({
+    time,
+    status,
+    title,
+    id,
+    description
+  }));
+  const totalEarned = tasks.reduce((acc, {time, status}) => {
+    if (status !== 'completed') return acc;
+    return acc + time * 13.25;
+  }, 0);
   return {
     props: {
-      tasks
+      tasks,
+      totalEarned
     }
   }
 }
 
 interface IHomeProps {
-  tasks: ITask[]
+  tasks: ITask[],
+  totalEarned: number,
 };
 
-export default function Home({tasks}: IHomeProps) {
+export default function Home({tasks, totalEarned}: IHomeProps) {
   const openTasks = tasks.filter(x => x.status === 'open');
   const startedTasks = tasks.filter(x => x.status === 'started');
   const totalHours = tasks.reduce((acc, {time, status}) => status === 'completed' ? acc : acc + time, 0);
@@ -33,6 +45,7 @@ export default function Home({tasks}: IHomeProps) {
       </Head>
       <h1>Alexis Bounty Board</h1>
       <h5>Jobs ready for work | {`${totalHours} ${totalHours > 1 ? 'hours' : 'hour' } available to work`}</h5>
+      <h6>Total Earned - ${totalEarned.toFixed(2)}</h6>
       <br />
       <h6>Started Jobs</h6>
       <hr />

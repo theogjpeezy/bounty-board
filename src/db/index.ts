@@ -4,7 +4,7 @@ import { INewTask, ITask } from './tasks';
 const MONGODB_URI: string = "mongodb://admin:admin@localhost:27017/?authMechanism=DEFAULT";
 const MONGODB_DB: string = "admin";
 
-export async function getTasks() {
+export async function getTasks(): Promise<ITask[]> {
   const { db } = await connectToDatabase();
   const results = await db.collection('tasks').find().toArray();
   return results.map(result => ({
@@ -13,7 +13,9 @@ export async function getTasks() {
     description: result.description,
     time: result.time,
     status: result.status,
-    notes: result.notes
+    notes: result.notes,
+    startedDate: result.startedDate,
+    completedDate: result.completedDate
   }));
 }
 
